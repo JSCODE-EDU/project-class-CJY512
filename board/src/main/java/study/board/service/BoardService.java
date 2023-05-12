@@ -30,7 +30,7 @@ public class BoardService {
 
     public Board findById(Long id) {
         return boardRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "error.board.notFound", new IllegalArgumentException("no such data")));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "error.board.notFound", new IllegalArgumentException("no such data")));
     }
 
     public List<Board> findByTitle(String title) {

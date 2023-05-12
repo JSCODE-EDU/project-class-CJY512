@@ -3,7 +3,7 @@ package study.board.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "error.board.notFound")
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "error.board.notFound")
 public class BoardNotFoundException extends RuntimeException {
     public BoardNotFoundException() {
         super();
