@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import study.board.controller.api.BoardApiController;
-import study.board.controller.api.dto.BoardSaveDto;
 import study.board.entity.Board;
 import study.board.service.BoardService;
 

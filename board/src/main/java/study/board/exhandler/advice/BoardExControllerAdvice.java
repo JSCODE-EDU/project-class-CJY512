@@ -1,6 +1,7 @@
 package study.board.exhandler.advice;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import study.board.exception.BoardNotFoundException;
+import study.board.exhandler.BaseErrorResult;
 import study.board.exhandler.ErrorResult;
 
 import java.util.HashMap;
@@ -18,12 +20,12 @@ import java.util.Map;
 public class BoardExControllerAdvice {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> boardNotFoundExHandler(BoardNotFoundException e) {
-        ErrorResult<Object> errorResult = ErrorResult.builder()
+    public ResponseEntity<BaseErrorResult> boardNotFoundExHandler(BoardNotFoundException e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
                 .errorCode(GlobalErrorCode.NOT_FOUND.getCode())
                 .errorMessage(e.getMessage())
                 .build();
-        return ResponseEntity.badRequest().body(errorResult);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResult);
     }
 
     /**
@@ -39,7 +41,7 @@ public class BoardExControllerAdvice {
                             errors.put(fieldName, errorMessage);
                         });
 
-        ErrorResult<Object> errorResult = ErrorResult.builder()
+        ErrorResult errorResult = ErrorResult.builder()
                 .errorCode(GlobalErrorCode.VALIDATION.getCode())
                 .errorMessage(GlobalErrorCode.VALIDATION.getMessage())
                 .errors(errors)
@@ -59,7 +61,7 @@ public class BoardExControllerAdvice {
                     String errorMessage = error.getDefaultMessage();
                     errors.put(fieldName, errorMessage);
                 });
-        ErrorResult<Object> errorResult = ErrorResult.builder()
+        ErrorResult errorResult = ErrorResult.builder()
                 .errorCode(GlobalErrorCode.QUERY_VALIDATION.getCode())
                 .errorMessage(GlobalErrorCode.QUERY_VALIDATION.getMessage())
                 .errors(errors)
@@ -69,8 +71,8 @@ public class BoardExControllerAdvice {
 
     @ExceptionHandler
 //    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ErrorResult> exHandler(Exception e) {
-        ErrorResult<Object> errorResult = ErrorResult.builder()
+    public ResponseEntity<BaseErrorResult> exHandler(Exception e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
                 .errorCode(GlobalErrorCode.INTERNAL_SERVER.getCode())
                 .errorMessage(GlobalErrorCode.INTERNAL_SERVER.getMessage())
                 .build();
