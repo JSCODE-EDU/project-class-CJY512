@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
       use-new-id-generator-mappings: false #hibernate 5의 AUTO의 전략이 TABLE
     properties:
       hibernate:
@@ -15,9 +15,9 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100
         dialect: org.hibernate.dialect.MySQL8Dialect
-  profiles:
-#    default: prod
-    active: local
+  config:
+    activate:
+      on-profile: prod
 
 
 
@@ -31,7 +31,7 @@ spring:
 server:
   error:
     include-message: always
-  port: 8080
+  port: 5000
 
 #swagger springdoc-ui 설정
 springdoc:
@@ -41,7 +41,7 @@ springdoc:
   swagger-ui:
     tags-sorter: alpha
     operations-sorter: method
-#    path:
+  #    path:
   api-docs:
     path: /api-docs/board  #openAPI 접근 경로
 #    groups:
