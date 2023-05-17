@@ -1,10 +1,8 @@
 package study.board.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 import study.board.entity.Board;
 import study.board.exception.BoardNotFoundException;
 import study.board.repository.BoardRepository;
@@ -30,7 +28,7 @@ public class BoardService {
 
     public Board findById(Long id) {
         return boardRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "error.board.notFound", new IllegalArgumentException("no such data")));
+                .orElseThrow(() -> new BoardNotFoundException("id" + id + "에 해당하는 게시판이 없습니다."));
     }
 
     public List<Board> findByTitle(String title) {
