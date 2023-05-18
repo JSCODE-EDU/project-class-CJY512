@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Map;
 
-@Data
 @SuperBuilder
 @Schema(description = "검증 오류 응답")
 public class ErrorResult extends BaseErrorResult {
