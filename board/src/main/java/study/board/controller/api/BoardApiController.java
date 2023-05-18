@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import study.board.controller.api.dto.BoardSearch;
 import study.board.controller.api.dto.GlobalResponseCode;
 import study.board.controller.api.dto.Result;
-import study.board.entity.Board;
 import study.board.exhandler.BaseErrorResult;
 import study.board.exhandler.ErrorResult;
 import study.board.service.BoardService;
@@ -28,6 +27,7 @@ import static study.board.controller.api.dto.BoardDto.*;
 import static study.board.controller.api.dto.BoardDto.BoardSaveRequest;
 import static study.board.controller.api.dto.BoardDto.BoardResponse;
 
+@SuppressWarnings("unchecked")
 @Tag(name = "Board", description = "게시판 API Doc")
 @Slf4j
 @RestController
@@ -151,11 +151,12 @@ public class BoardApiController {
                         .collect(Collectors.toList()))
                 .build();
     }
-
+/*
     @PostConstruct
     public void init() {
         for (int i = 1; i < 300; i++) {
             boardService.save(Board.createBoard("title" + i, "content" + i));
         }
     }
+    */
 }
