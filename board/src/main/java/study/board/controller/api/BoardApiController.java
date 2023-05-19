@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import study.board.controller.api.dto.BoardDto;
 import study.board.controller.api.dto.BoardSearch;
 import study.board.controller.api.dto.GlobalResponseCode;
 import study.board.controller.api.dto.Result;
-import study.board.entity.Board;
 import study.board.exhandler.BaseErrorResult;
 import study.board.exhandler.ErrorResult;
 import study.board.service.BoardService;
@@ -28,6 +28,7 @@ import static study.board.controller.api.dto.BoardDto.*;
 import static study.board.controller.api.dto.BoardDto.BoardSaveRequest;
 import static study.board.controller.api.dto.BoardDto.BoardResponse;
 
+//@SuppressWarnings("unchecked")
 @Tag(name = "Board", description = "게시판 API Doc")
 @Slf4j
 @RestController
@@ -85,12 +86,11 @@ public class BoardApiController {
     public Result<BoardResponse> findOne(@Parameter(name = "board_id", description = "찾고 싶은 게시글 id", required = true, in = ParameterIn.PATH)
                                       @PathVariable("id") Long id) {
         BoardResponse boardResponse = BoardResponse.fromEntity(boardService.findById(id));
-        Result result = Result.<BoardResponse>builder()
+        return Result.<BoardResponse>builder()
                 .code(GlobalResponseCode.SUCCESS_BOARD.getCode())
                 .message(GlobalResponseCode.SUCCESS_BOARD.getMessage())
                 .data(boardResponse)
                 .build();
-        return result;
     }
 
     @Operation(
@@ -151,11 +151,12 @@ public class BoardApiController {
                         .collect(Collectors.toList()))
                 .build();
     }
-
+/*
     @PostConstruct
     public void init() {
         for (int i = 1; i < 300; i++) {
             boardService.save(Board.createBoard("title" + i, "content" + i));
         }
     }
+    */
 }

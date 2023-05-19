@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import study.board.exception.BoardNotFoundException;
 import study.board.exhandler.BaseErrorResult;
 import study.board.exhandler.ErrorResult;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RestControllerAdvice("study.board.controller.api")
+@RestControllerAdvice
 public class BoardExControllerAdvice {
 
     @ExceptionHandler
@@ -78,4 +79,12 @@ public class BoardExControllerAdvice {
                 .build();
         return ResponseEntity.internalServerError().body(errorResult);
     }
+
+/*    public ResponseEntity<BaseErrorResult> handleExceptionInternal(GlobalErrorCode globalErrorCode) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(BaseErrorResult.builder().errorCode(GlobalErrorCode.INTERNAL_SERVER.getCode())
+                        .errorMessage(GlobalErrorCode.INTERNAL_SERVER.getMessage()).build());
+
+    }*/
 }

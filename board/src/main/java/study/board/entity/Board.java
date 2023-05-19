@@ -19,6 +19,7 @@ public class Board extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String title;
     @Column(length = 1005)
+//    @Lob
     private String content;
 
     private Board(String title, String content){
