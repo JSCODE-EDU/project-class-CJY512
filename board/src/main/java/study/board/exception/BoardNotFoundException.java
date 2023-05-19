@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "error.board.notFound")
 public class BoardNotFoundException extends RuntimeException {
+
+//    private final static String MESSAGE = ""
     public BoardNotFoundException() {
         super();
     }
