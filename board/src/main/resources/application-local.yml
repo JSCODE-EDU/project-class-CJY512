@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       use-new-id-generator-mappings: false #hibernate 5의 AUTO의 전략이 TABLE
     properties:
       hibernate:

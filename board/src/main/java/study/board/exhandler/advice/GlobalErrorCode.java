@@ -4,7 +4,10 @@ public enum GlobalErrorCode {
     INTERNAL_SERVER("000","내부 오류"),
     NOT_FOUND("001","존재하지 않는 데이터입니다."),
     VALIDATION("002","validation error"),
-    QUERY_VALIDATION("003","query validation error");
+    QUERY_VALIDATION("003","query validation error"),
+
+    CONFLICT("409", "conflict");
+
 
     private final String code;
     private final String message;
