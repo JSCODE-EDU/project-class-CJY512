@@ -3,9 +3,10 @@ package study.board.exhandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
 @SuperBuilder
 @Schema(description = "공통 오류 응답")
 public class BaseErrorResult {

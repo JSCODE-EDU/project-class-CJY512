@@ -8,8 +8,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import study.board.exception.BoardNotFoundException;
+import study.board.exception.EmailDupException;
 import study.board.exhandler.BaseErrorResult;
 import study.board.exhandler.ErrorResult;
 
@@ -18,7 +18,17 @@ import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
-public class BoardExControllerAdvice {
+public class ExceptionManager {
+
+
+    @ExceptionHandler
+    public ResponseEntity<BaseErrorResult> emailDupExHandler(EmailDupException e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
+                .errorCode(GlobalErrorCode.CONFLICT.getCode())
+                .errorMessage(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResult);
+    }
 
     @ExceptionHandler
     public ResponseEntity<BaseErrorResult> boardNotFoundExHandler(BoardNotFoundException e) {
@@ -41,11 +51,10 @@ public class BoardExControllerAdvice {
                             String errorMessage = error.getDefaultMessage();
                             errors.put(fieldName, errorMessage);
                         });
-
         ErrorResult errorResult = ErrorResult.builder()
                 .errorCode(GlobalErrorCode.VALIDATION.getCode())
                 .errorMessage(GlobalErrorCode.VALIDATION.getMessage())
-                .errors(errors)
+                .details(errors)
                 .build();
         return ResponseEntity.badRequest().body(errorResult);
     }
@@ -65,7 +74,7 @@ public class BoardExControllerAdvice {
         ErrorResult errorResult = ErrorResult.builder()
                 .errorCode(GlobalErrorCode.QUERY_VALIDATION.getCode())
                 .errorMessage(GlobalErrorCode.QUERY_VALIDATION.getMessage())
-                .errors(errors)
+                .details(errors)
                 .build();
         return ResponseEntity.badRequest().body(errorResult);
     }
