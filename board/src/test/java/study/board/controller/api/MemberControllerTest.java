@@ -9,24 +9,23 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import study.board.exception.EmailDupException;
-import study.board.service.BoardService;
-import study.board.service.UserService;
+import study.board.service.MemberService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static study.board.controller.api.dto.UserDto.*;
+import static study.board.controller.api.dto.MemberDto.*;
 
 @WebMvcTest(controllers = UserController.class)
-class UserControllerTest {
+class MemberControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    MemberService memberService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -39,7 +38,7 @@ class UserControllerTest {
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(UserJoinRequest.builder()
+                        .content(objectMapper.writeValueAsBytes(MemberJoinRequest.builder()
                                 .email(email)
                                 .password(password)
                                 .build()
@@ -57,12 +56,12 @@ class UserControllerTest {
         String email = "cjy@cjy.com";
         String password = "1q2w3e4r";
 
-        when(userService.join(any()))
+        when(memberService.join(any()))
                 .thenThrow(new EmailDupException("사용중인 이메일주소입니다."));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(UserJoinRequest.builder()
+                        .content(objectMapper.writeValueAsBytes(MemberJoinRequest.builder()
                                 .email(email)
                                 .password(password)
                                 .build()

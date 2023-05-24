@@ -1,4 +1,4 @@
-package study.board.confing;
+package study.board.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,4 +14,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "DELETE", "OPTIONS")
                 .maxAge(3000);
     }
+
 }

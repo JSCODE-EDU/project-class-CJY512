@@ -3,6 +3,7 @@ package study.board.exhandler.advice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +21,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionManager {
 
+
+    @ExceptionHandler
+    public ResponseEntity<BaseErrorResult> usernameNotFoundExHandler(UsernameNotFoundException e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
+                .errorCode(GlobalErrorCode.NOT_FOUND.getCode())
+                .errorMessage(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResult);
+    }
 
     @ExceptionHandler
     public ResponseEntity<BaseErrorResult> emailDupExHandler(EmailDupException e) {
