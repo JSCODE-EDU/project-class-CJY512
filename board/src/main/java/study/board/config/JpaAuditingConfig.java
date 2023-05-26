@@ -1,4 +1,4 @@
-package study.board.confing;
+package study.board.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

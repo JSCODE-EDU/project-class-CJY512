@@ -1,4 +1,4 @@
-package study.board.confing;
+package study.board.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
