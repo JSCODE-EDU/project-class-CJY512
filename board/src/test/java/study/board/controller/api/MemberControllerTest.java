@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static study.board.controller.api.dto.MemberDto.*;
 
-@WebMvcTest(controllers = UserController.class)
+@WebMvcTest(controllers = MemberApiController.class)
 class MemberControllerTest {
 
     @Autowired
