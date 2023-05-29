@@ -5,7 +5,9 @@ public enum GlobalResponseCode {
     SUCCESS_BOARD_LIST("001","board list"),
     SUCCESS_BOARD("002","board info"),
     SUCCESS_SAVE("003","saved successfully"),
-    SUCCESS_UPDATE("004","updated successfully");
+    SUCCESS_UPDATE("004","updated successfully"),
+    SUCCESS_MEMBER("005","member mypage");
+
 
     private final String code;
     private final String message;

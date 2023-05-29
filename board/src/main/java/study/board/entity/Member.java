@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member extends BaseEntity implements UserDetails {
+public class Member extends BaseEntity {
 
     @Id @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -36,39 +36,9 @@ public class Member extends BaseEntity implements UserDetails {
         roles.add("ROLE_USER");
     }
 
-    public static Member createUser(String email, String password) {
+    //==생성 메서드==//
+    public static Member createMember(String email, String password) {
         return new Member(email, password);
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

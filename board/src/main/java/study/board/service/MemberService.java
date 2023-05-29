@@ -6,9 +6,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import study.board.config.jwt.JwtUtil;
+import study.board.config.jwt.TokenInfo;
 import study.board.entity.Member;
 import study.board.exception.EmailDupException;
+import study.board.exception.MemberNotFoundException;
 import study.board.repository.MemberRepository;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtUtil jwtUtil;
 
     public String join(Member member) {
 
@@ -33,7 +39,7 @@ public class MemberService {
         return "SUCCESS";
     }
 
-    public String login(String email, String password) {
+    public TokenInfo login(String email, String password) {
         // 1. Login EMAIL/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
@@ -43,9 +49,14 @@ public class MemberService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-//        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-//
-//        return tokenInfo;
-        return "ok";
+        TokenInfo tokenInfo = jwtUtil.generateToken(authentication);
+
+        return tokenInfo;
+    }
+
+    public Member myPage(HttpServletRequest request) {
+        Long memberId = jwtUtil.getMemberId(request);
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다."));
     }
 }
