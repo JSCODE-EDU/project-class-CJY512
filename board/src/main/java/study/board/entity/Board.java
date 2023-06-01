@@ -22,6 +22,10 @@ public class Board extends BaseEntity {
 //    @Lob
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     private Board(String title, String content){
         this.title = title;
         this.content = content;
