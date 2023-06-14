@@ -19,7 +19,7 @@ public class Board extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String title;
     @Column(length = 1005)
-//    @Lob
+    @Lob
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
