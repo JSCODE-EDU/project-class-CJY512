@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.board.entity.Board;
+import study.board.entity.Member;
+import study.board.exception.BoardNotAuthorizedException;
 import study.board.exception.BoardNotFoundException;
 import study.board.repository.BoardRepository;
 
@@ -23,7 +25,7 @@ public class BoardService {
     }
 
     public List<Board> findBoards() {
-        return boardRepository.findTop100AllByOrderByCreatedDateDesc();
+        return boardRepository.findTop100AllByOrderByCreatedDateTimeDesc();
     }
 
     public Board findById(Long id) {
@@ -32,20 +34,30 @@ public class BoardService {
     }
 
     public List<Board> findByTitle(String title) {
-        return boardRepository.findTop100ByTitleContainingOrderByCreatedDateDesc(title);
+        return boardRepository.findTop100ByTitleContainingOrderByCreatedDateTimeDesc(title);
     }
 
     @Transactional
-    public Board update(Long id, Board newBoard) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new BoardNotFoundException("id" + id + "에 해당하는 게시판이 없습니다."))
-                .update(newBoard);
+    public Board update(Long id, Board newBoard, Member member) {
+        Board findBoard = boardRepository.findById(id)
+                .orElseThrow(() -> new BoardNotFoundException("id" + id + "에 해당하는 게시판이 없습니다."));
+        validateWriter(findBoard, member.getId());
+
+        return findBoard.update(newBoard);
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        boardRepository.delete(boardRepository.findById(id)
-                .orElseThrow(() -> new BoardNotFoundException(id + ", id에 해당하는 게시판이 없습니다.")));
+    public void deleteById(Long boardId, Member member) {
+        Board findBoard = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException(boardId + ", id에 해당하는 게시판이 없습니다."));
+        validateWriter(findBoard, member.getId());
+        boardRepository.delete(findBoard);
+    }
+
+    private void validateWriter(Board findBoard, Long updaterId) {
+        if(!findBoard.isWriter(updaterId)) {
+            throw new BoardNotAuthorizedException("게시물에 대한 권한이 없습니다.");
+        }
     }
 
 }

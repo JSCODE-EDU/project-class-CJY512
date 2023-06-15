@@ -67,7 +67,7 @@ public class MemberDto {
             return MemberResponse.builder()
                     .id(member.getId())
                     .email(member.getEmail())
-                    .createdDate(member.getCreatedDate())
+                    .createdDate(member.getCreatedDateTime())
                     .build();
         }
 

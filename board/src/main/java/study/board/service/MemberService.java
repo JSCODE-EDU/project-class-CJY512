@@ -53,10 +53,11 @@ public class MemberService {
 
         return tokenInfo;
     }
-
+/*
     public Member myPage(HttpServletRequest request) {
         Long memberId = jwtUtil.getMemberId(request);
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다."));
     }
+    */
 }
