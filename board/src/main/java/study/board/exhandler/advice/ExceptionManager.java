@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import study.board.exception.BoardNotAuthorizedException;
 import study.board.exception.BoardNotFoundException;
 import study.board.exception.EmailDupException;
 import study.board.exhandler.BaseErrorResult;
@@ -47,6 +48,15 @@ public class ExceptionManager {
                 .errorMessage(e.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResult);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<BaseErrorResult> boardNotAuthorizedException(BoardNotAuthorizedException e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
+                .errorCode(GlobalErrorCode.UNAUTHORIZED.getCode())
+                .errorMessage(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResult);
     }
 
     /**

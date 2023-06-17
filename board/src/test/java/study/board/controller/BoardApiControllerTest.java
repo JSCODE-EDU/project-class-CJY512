@@ -32,7 +32,7 @@ class BoardApiControllerTest {
     @DisplayName("게시판 등록 성공")
     @Test
     void saveBoardSuccess() {
-        Board board = Board.createBoard("test", "test");
+
 
 
     }

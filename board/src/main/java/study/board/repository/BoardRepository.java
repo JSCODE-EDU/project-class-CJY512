@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    List<Board> findTop100AllByOrderByCreatedDateDesc();
+    List<Board> findTop100AllByOrderByCreatedDateTimeDesc();
 
-    List<Board> findTop100ByTitleContainingOrderByCreatedDateDesc(String title);
+    List<Board> findTop100ByTitleContainingOrderByCreatedDateTimeDesc(String title);
 
 }

@@ -6,6 +6,7 @@ public enum GlobalErrorCode {
     VALIDATION("002","validation error"),
     QUERY_VALIDATION("003","query validation error"),
 
+    UNAUTHORIZED("403", "Unauthorized access"),
     CONFLICT("409", "conflict");
 
 

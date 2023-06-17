@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import study.board.config.jwt.JwtAuth;
 import study.board.config.jwt.JwtUtil;
 import study.board.config.jwt.TokenInfo;
 import study.board.controller.api.dto.GlobalResponseCode;
@@ -41,8 +42,8 @@ public class MemberApiController {
     }
 
     @GetMapping("/mypage")
-    public Result<MemberResponse> myPage(HttpServletRequest request) {
-        MemberResponse memberResponse = MemberResponse.fromEntity(memberService.myPage(request));
+    public Result<MemberResponse> myPage(@JwtAuth Member member) {
+        MemberResponse memberResponse = MemberResponse.fromEntity(member);
         return Result.<MemberResponse>builder()
                 .code(GlobalResponseCode.SUCCESS_MEMBER.getCode())
                 .message(GlobalResponseCode.SUCCESS_MEMBER.getMessage())
