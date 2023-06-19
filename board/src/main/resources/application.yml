@@ -18,7 +18,11 @@ spring:
   profiles:
     default: local
 #    active: local
-
+  data:
+    web:
+      pageable:
+#        default-page-size:
+        max-page-size: 100
 
 
   logging:

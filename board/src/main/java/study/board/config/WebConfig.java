@@ -6,6 +6,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import study.board.config.jwt.AuthMemberArgumentResolver;
+import study.board.config.pagination.PaginationArgumentResolver;
 
 import java.util.List;
 
@@ -14,11 +15,13 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final AuthMemberArgumentResolver authMemberArgumentResolver;
+    private final PaginationArgumentResolver paginationArgumentResolver;
 
     //JWT 인증 아규먼트 리졸버 추가
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authMemberArgumentResolver);
+        resolvers.add(paginationArgumentResolver);
     }
 
     @Override

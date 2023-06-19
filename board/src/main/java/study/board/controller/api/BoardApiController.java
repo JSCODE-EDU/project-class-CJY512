@@ -9,14 +9,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import study.board.config.jwt.JwtAuth;
-import study.board.controller.api.dto.BoardSearch;
-import study.board.controller.api.dto.CommentDto;
-import study.board.controller.api.dto.GlobalResponseCode;
-import study.board.controller.api.dto.Result;
+import study.board.controller.api.dto.*;
 import study.board.entity.Board;
 import study.board.entity.Comment;
 import study.board.entity.Member;
@@ -24,6 +22,7 @@ import study.board.exhandler.BaseErrorResult;
 import study.board.exhandler.ErrorResult;
 import study.board.service.BoardService;
 import study.board.service.CommentService;
+import study.board.service.LikeService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +31,7 @@ import static study.board.controller.api.dto.BoardDto.*;
 import static study.board.controller.api.dto.BoardDto.BoardSaveRequest;
 import static study.board.controller.api.dto.BoardDto.BoardResponse;
 import static study.board.controller.api.dto.CommentDto.*;
+import static study.board.controller.api.dto.LikeDto.*;
 
 //@SuppressWarnings("unchecked")
 @Tag(name = "Board", description = "게시판 API Doc")
@@ -44,6 +44,7 @@ public class BoardApiController {
 
     private final BoardService boardService;
     private final CommentService commentService;
+    private final LikeService likeService;
 
     @Operation(
             summary = "게시글 저장 기능",
@@ -190,8 +191,22 @@ public class BoardApiController {
         Comment comment = commentService.saveComment(commentSaveRequest.toEntity(member, board));
         return Result.<CommentResponse>builder()
                 .code(GlobalResponseCode.SUCCESS_SAVE.getCode())
-                .message(GlobalResponseCode.SUCCESS_MEMBER.getMessage())
+                .message(GlobalResponseCode.SUCCESS_SAVE.getMessage())
                 .data(CommentResponse.fromEntity(comment))
+                .build();
+    }
+
+    //----------------------------좋아요--------------------------------
+    @PostMapping("/{id}/like")
+    public Result<LikeResponse> addOrDeleteLike(
+            @JwtAuth Member member,
+            @PathVariable("id") Long boardId) {
+        Board board = boardService.findById(boardId);
+        LikeResponse likeResponse = new LikeResponse(likeService.addOrDeleteLikeV2(board, member));
+        return Result.<LikeResponse>builder()
+                .code(GlobalResponseCode.SUCCESS.getCode())
+                .message(GlobalResponseCode.SUCCESS.getMessage())
+                .data(likeResponse)
                 .build();
     }
 }
