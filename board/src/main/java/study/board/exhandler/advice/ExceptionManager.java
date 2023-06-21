@@ -51,6 +51,15 @@ public class ExceptionManager {
     }
 
     @ExceptionHandler
+    public ResponseEntity<BaseErrorResult> illegalArgumentExHandler(IllegalArgumentException e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
+                .errorCode(GlobalErrorCode.VALIDATION.getCode())
+                .errorMessage(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<BaseErrorResult> boardNotAuthorizedException(BoardNotAuthorizedException e) {
         BaseErrorResult errorResult = BaseErrorResult.builder()
                 .errorCode(GlobalErrorCode.UNAUTHORIZED.getCode())

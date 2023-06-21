@@ -9,11 +9,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import study.board.config.jwt.JwtAuth;
+import study.board.config.pagination.PaginationLimit;
 import study.board.controller.api.dto.*;
 import study.board.entity.Board;
 import study.board.entity.Comment;
@@ -73,11 +78,13 @@ public class BoardApiController {
             @ApiResponse(responseCode = "200", description = "게시글 조회 성공. 단, 최근 생성 시간 기준 100개의 게시글."),
             })
     @GetMapping
-    public Result<List<BoardResponse>> findBoards() {
+    @PaginationLimit(maxSize = 100) //페이지 최대 사이즈 커스텀 어노테이션
+    public Result<List<BoardResponse>> findBoards(@PageableDefault(size = 100, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+
         return Result.<List<BoardResponse>>builder()
                 .code(GlobalResponseCode.SUCCESS_BOARD_LIST.getCode())
                 .message(GlobalResponseCode.SUCCESS_BOARD_LIST.getMessage())
-                .data(boardService.findBoards().stream()
+                .data(boardService.findBoards(pageable).stream()
                         .map(BoardResponse::fromEntity)
                         .collect(Collectors.toList()))
                 .build();
@@ -92,17 +99,17 @@ public class BoardApiController {
                     @ApiResponse(responseCode = "404", description = "존재하지 않는 게시글 접근",
                             content = @Content(schema = @Schema(implementation = BaseErrorResult.class))) })
     @GetMapping("/{id}")
-    public Result<BoardDetailsResponse> findOne(@Parameter(name = "board_id", description = "찾고 싶은 게시글 id", required = true, in = ParameterIn.PATH)
-                                      @PathVariable("id") Long id) {
+    @PaginationLimit(maxSize = 100)
+    public Result<BoardDetailsResponse> findOne(@PageableDefault(size=100, sort = "createdDateTime", direction = Sort.Direction.ASC) Pageable pageable,
+                                                @Parameter(name = "board_id", description = "찾고 싶은 게시글 id", required = true, in = ParameterIn.PATH)
+                                                @PathVariable("id") Long id) {
 
         Board findBoard = boardService.findById(id);
 
-        List<CommentResponse> commentResponses = commentService.findCommentsByBoard(findBoard)
-                .stream()
-                .map(CommentResponse::fromEntity)
-                .collect(Collectors.toList());
+        Page<Comment> pageComments = commentService.findCommentsPageByBoard(findBoard, pageable);
+        Page<CommentResponse> pageCommentResponses = pageComments.map(CommentResponse::fromEntity);
 
-        BoardDetailsResponse boardDetailsResponse = BoardDetailsResponse.fromEntity(findBoard, commentResponses);
+        BoardDetailsResponse boardDetailsResponse = BoardDetailsResponse.fromEntity(findBoard, pageCommentResponses);
 
         return Result.<BoardDetailsResponse>builder()
                 .code(GlobalResponseCode.SUCCESS_BOARD.getCode())
