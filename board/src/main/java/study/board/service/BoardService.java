@@ -27,6 +27,7 @@ public class BoardService {
     }
 
     public Page<Board> findBoards(Pageable pageable) {
+//        boardRepository.findAll(pageable);
         return boardRepository.findAllPageBy(pageable);
     }
 

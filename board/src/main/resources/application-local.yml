@@ -24,8 +24,15 @@ spring:
     level:
       org.hibernate.SQL: debug
       org.hibernate.type: trace
+
   messages:
     basename: messages,errors
+  data:
+    web:
+      pageable:
+        max-page-size: 100
+
+
 
 server:
   error:

@@ -79,7 +79,7 @@ public class BoardApiController {
             })
     @GetMapping
     @PaginationLimit(maxSize = 100) //페이지 최대 사이즈 커스텀 어노테이션
-    public Result<List<BoardResponse>> findBoards(@PageableDefault(size = 100, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Result<List<BoardResponse>> findBoards(@PageableDefault(size = 10, sort = "createdDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 
         return Result.<List<BoardResponse>>builder()
                 .code(GlobalResponseCode.SUCCESS_BOARD_LIST.getCode())
@@ -100,7 +100,7 @@ public class BoardApiController {
                             content = @Content(schema = @Schema(implementation = BaseErrorResult.class))) })
     @GetMapping("/{id}")
     @PaginationLimit(maxSize = 100)
-    public Result<BoardDetailsResponse> findOne(@PageableDefault(size=100, sort = "createdDateTime", direction = Sort.Direction.ASC) Pageable pageable,
+    public Result<BoardDetailsResponse> findOne(@PageableDefault(size=10, sort = "createdDateTime", direction = Sort.Direction.ASC) Pageable pageable,
                                                 @Parameter(name = "board_id", description = "찾고 싶은 게시글 id", required = true, in = ParameterIn.PATH)
                                                 @PathVariable("id") Long id) {
 
