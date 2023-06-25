@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.domain.Page;
 import study.board.entity.Board;
 import study.board.entity.Comment;
 import study.board.entity.Member;
@@ -78,9 +79,9 @@ public class BoardDto {
         @Schema(description = "게시글 생성 시간")
         private LocalDateTime createdDateTime;
         @Schema(description = "게시글 댓글 정보")
-        private List<CommentResponse> comments;
+        private Page<CommentResponse> comments;
 
-        public static BoardDetailsResponse fromEntity(Board board, List<CommentResponse> comments) {
+        public static BoardDetailsResponse fromEntity(Board board, Page<CommentResponse> comments) {
             return BoardDetailsResponse.builder()
                     .id(board.getId())
                     .title(board.getTitle())

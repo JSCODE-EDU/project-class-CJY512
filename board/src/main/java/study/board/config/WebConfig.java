@@ -20,8 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
     //JWT 인증 아규먼트 리졸버 추가
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(authMemberArgumentResolver);
+        paginationArgumentResolver.setMaxPageSize(100);
         resolvers.add(paginationArgumentResolver);
+        resolvers.add(authMemberArgumentResolver);
     }
 
     @Override
