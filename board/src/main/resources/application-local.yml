@@ -32,6 +32,10 @@ spring:
       pageable:
         max-page-size: 100
 
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
 
 
 server:
@@ -56,4 +60,18 @@ springdoc:
 
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+# AWS S3 설정
+cloud:
+  aws:
+    credentials:
+      access-key: accessKey값
+      secret-key: secretKey값
+    s3:
+      bucket: 버킷네임
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 
