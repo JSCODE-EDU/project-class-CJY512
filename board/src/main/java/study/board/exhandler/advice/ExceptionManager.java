@@ -109,6 +109,14 @@ public class ExceptionManager {
     }
 
     @ExceptionHandler
+    public ResponseEntity<BaseErrorResult> runtimeExHandler(RuntimeException e) {
+        BaseErrorResult errorResult = BaseErrorResult.builder()
+                .errorCode(GlobalErrorCode.NOT_FOUND.getCode())
+                .errorMessage(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
+    }
+    @ExceptionHandler
 //    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<BaseErrorResult> exHandler(Exception e) {
         BaseErrorResult errorResult = BaseErrorResult.builder()
