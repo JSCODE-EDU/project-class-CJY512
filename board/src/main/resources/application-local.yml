@@ -65,10 +65,10 @@ jwt:
 cloud:
   aws:
     credentials:
-      access-key: accessKey값
-      secret-key: secretKey값
+      access-key: AKIAVEHKD22V4D7J5S5S
+      secret-key: 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
     s3:
-      bucket: 버킷네임
+      bucket: cjyfirstbucket
     region:
       static: ap-northeast-2
     stack:
